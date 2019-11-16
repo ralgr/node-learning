@@ -1,0 +1,16 @@
+[
+    {
+        "title":"On the fence.",
+        "imageUrl":"https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
+        "description":"The journey of a boy to become the man he must.",
+        "price":"19.99",
+        "id":"0.2545998582431013"
+    },
+    {
+        "title":"Steady.",
+        "imageUrl":"https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
+        "description":"A tale about keeping oneself steady in a world that wants to rock you.",
+        "price":"12",
+        "id":"0.02044897884729524"
+    }
+]
