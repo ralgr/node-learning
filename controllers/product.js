@@ -72,40 +72,22 @@ exports.getProduct = (req, res, next) => {
 //     .catch(err => console.log(err));
 // };
 
-// exports.postCart = (req, res, next) => {
-//     const prodId = req.body.productId;
-//     let fetchedCart;
-//     let newQty = 1;
-
-//     // >> SQLZ <<
-//     req.user.getCart()
-//     .then(cart => {
-//         fetchedCart = cart;
-
-//         // Check if the product to be added is already in cart
-//         return cart.getProducts({ where: {id: prodId } })    
-//     })
-//     .then(products => {
-//         let product;
-
-//         if (products.length > 0) {
-//             product = products[0]
-//         }
-
-//         if (product) {
-//             newQty = 1 + product.cartItem.qty;
-//         }
-        
-//         return Product.findByPk(prodId)
-//     })
-//     .then(product => {
-//         return fetchedCart.addProduct(product, { through: { qty: newQty } });
-//     })
-//     .then(() => {
-//         res.redirect('/product-list')
-//     })
-//     .catch(err => console.log(err))
-// };
+exports.postCart = (req, res, next) => {
+    const prodId = req.body.productId;
+    
+    // Search prod using ID
+    Product.findById(prodId)
+    .then(product => {
+        return req.user.addToCart(req.userId, product)        
+    })
+    .then(results => {
+        console.log('Item added!');  
+    })
+    .catch(err => {console.log(err)})
+    // Check if product is in cart already
+    // If in cart, add qty
+    // If not, add product w/ qty    
+};
 
 // exports.postDeleteCartItem = (req, res, next) => {
 //     const prodId = req.body.id;

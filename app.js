@@ -6,6 +6,7 @@ const path = require('path');
 
 const catchAllCtrlr = require('./controllers/catchAll');
 const MongoConn = require('./util/mongo').mongoConn;
+const User = require('./models/users');
 
 // 'app' Initialize a new object where express.js will store and manage various things BTS.
 // 'app' is also a valid request handler, as such it is possible to register it as a request handler.
@@ -47,17 +48,18 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    // User.findByPk(1)
-    // .then(user => {
-    //     // Creating a new field to the req object.
-    //     // Careful on overwriting existing ones.
-    //     req.user = user; // The full suite user; not just an object
-    //     next();
-    // })
-    // .catch(err => {
-    //     console.log(err);
-    // })
-    next();
+    User.findById('5dd01a14161ec85f9487b452')
+    .then(user => {                
+        // Creating a new field to the req object.
+        // Careful on overwriting existing ones.
+        req.user = new User(user.name, user.email, user.cart); // The full suite user; not just an object
+        req.userId = user._id;
+
+        next();
+    })
+    .catch(err => {
+        console.log(err);
+    })
 });
 
 // Using the routes in the admin file.

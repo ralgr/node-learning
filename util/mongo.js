@@ -26,7 +26,7 @@ const mongoConn = callback => {
 }
 
 // Export that returns access to the db if available.
-const getDb = () => {
+const getDb = () => {      
     if (_db) {
         return _db;
     }
