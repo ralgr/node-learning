@@ -39,7 +39,7 @@ exports.postAddProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const userId = req.user._id;
+    const userId = req.userId;    
     const product = new Product(title, price, description, imageUrl, userId);
 
     product.save()
@@ -102,12 +102,17 @@ exports.postEditProduct = (req, res, next) => {
     })
 };
 
+// Should delete items in cart in addition to the database
 exports.postDeleteProduct = (req, res, next) => {   
     const productId = req.body.id;
+    const userId = req.userId;
 
     Product.deleteById(productId)
     .then(() => {
         console.log('Destroy complete');
+        // Delete item on cart as well
+        req.user.deleteCartItem(productId, userId)
+
         res.redirect('/admin/admin-product-list');
     })
     .catch(err => {

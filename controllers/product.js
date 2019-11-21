@@ -49,28 +49,21 @@ exports.getProduct = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.getCart = (req, res, next) => {
-//     console.log('Initialized get cart');
-
-//     req.user.getCart()
-//     .then(cart => {                 
-//         // Does not make use of 'EAGER LOADING' which immediately loads the returned data with additional 
-//         // associated data inside an array. This is done by adding an include object like so: { include: ['tableName'] }.       
-//         return cart.getProducts();
-//     })
-//     .then(products => {        
-//         // Get id > use id to search in cart > get qty
-      
-//         res.render('shop/cart', {
-//             path: '/cart', 
-//             docTitle: 'My Cart',  
-//             productCSS: true,
-//             formCSS: true,
-//             cartProducts: products
-//         });
-//     })
-//     .catch(err => console.log(err));
-// };
+exports.getCart = (req, res, next) => {
+    console.log('Initialized get cart');
+    
+    req.user.getCart()
+    .then(products => {
+        res.render('shop/cart', {
+            path: '/cart', 
+            docTitle: 'My Cart',  
+            productCSS: true,
+            formCSS: true,
+            cartProducts: products
+        }); 
+    })
+    .catch(err => console.log(err))
+};
 
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
@@ -81,31 +74,22 @@ exports.postCart = (req, res, next) => {
         return req.user.addToCart(req.userId, product)        
     })
     .then(results => {
-        console.log('Item added!');  
+        console.log('Item added!');
+        res.redirect('/product-list')  
     })
     .catch(err => {console.log(err)})
-    // Check if product is in cart already
-    // If in cart, add qty
-    // If not, add product w/ qty    
 };
 
-// exports.postDeleteCartItem = (req, res, next) => {
-//     const prodId = req.body.id;
+exports.postDeleteCartItem = (req, res, next) => {
+    const prodId = req.body.id;
+    const userId = req.userId;
     
-//     req.user.getCart()
-//     .then(cart => {
-//         return cart.getProducts({ where: {id: prodId } })
-//     })
-//     .then(products => {
-//         const product = products[0];
-
-//         return product.cartItem.destroy();
-//     })
-//     .then(result => {
-//         res.redirect('/cart');
-//     })
-//     .catch(err => console.log(err));
-// };
+    req.user.deleteCartItem(prodId, userId)
+    .then(() => {
+        res.redirect('/cart');
+    })
+    .catch(err => console.log(err));
+};
 
 // exports.getOrders = (req, res, next) => {
 //     // Get orders from db > display

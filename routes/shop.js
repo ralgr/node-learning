@@ -23,9 +23,9 @@ router.get('/product-list', prodCtrlr.getProducts);
 router.get('/product-list/:productId', prodCtrlr.getProduct);
 
 // Cart
-// router.get('/cart', prodCtrlr.getCart);
+router.get('/cart', prodCtrlr.getCart);
 router.post('/cart', prodCtrlr.postCart);
-// router.post('/cart-delete-item', prodCtrlr.postDeleteCartItem);
+router.post('/cart-delete-item', prodCtrlr.postDeleteCartItem);
 
 // Orders
 // router.get('/orders', prodCtrlr.getOrders);

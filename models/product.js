@@ -59,7 +59,7 @@ class Product {
 
     static deleteById(id) {        
         const db = getDb(); 
-        
+
         return db.collection('products')
         .deleteOne( { _id: mongodb.ObjectID(id) } )
     }
