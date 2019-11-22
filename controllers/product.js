@@ -107,42 +107,13 @@ exports.postDeleteCartItem = (req, res, next) => {
 //     .catch(err => console.log(err))
 // };
 
-// exports.postOrder = (req, res, next) => { 
-//     let fetchedCart;
-    
-//     // Access cart.
-//     req.user.getCart()
-//     .then(cart => {
-//         fetchedCart = cart;
+exports.postOrder = (req, res, next) => { 
+    const userId = req.userId;
 
-//         // Get products through cart.
-//         return cart.getProducts();
-//     })
-//     .then(products => {
-//         // Create order in order table
-//         return req.user.createOrder()
-//         .then(order => {
-//             // Add all products linked in the cart table to the order table
-//             order.addProduct(
-//                 // Map is used to cycle through everything in the array.
-//                 // Could also use a for loop here but map is cleaner.
-//                 products.map(product => {
-//                     // orderItem and all its functions is apparently accessible from product as it is associated with it.
-//                     // Here we directly modify the qty field for each product in the orderItem connector table.
-//                     // The qty here is accessed throught the supplied cartItem on every product.
-//                     // I think this is possible because I created an order through its connection with the user.
-//                     product.orderItem = {qty: product.cartItem.qty };          
-//                     return product;
-//                 })
-//             )
-//         })
-//     })
-//     .then(() => {
-//         return fetchedCart.setProducts(null);
-//     })
-//     .then(() => {
-//         res.redirect('/orders')
-//     })
-//     .catch(err => console.log(err))
-// };
+    req.user.addOrder(userId)
+    .then(() => {
+        res.redirect('/orders')
+    })
+    .catch(err => console.log(err))
+};
 

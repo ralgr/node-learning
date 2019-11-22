@@ -96,6 +96,26 @@ class User {
         );
     }
 
+    addOrder(userId) {
+        const db = getDb();       
+
+        return db.collection('orders')
+        .insertOne(this.cart)
+        .then(() => {
+            // Clear cart 
+            // No coupling since still uses users model
+            return db.collection('users')
+            .updateOne( 
+                { _id : mongodb.ObjectID(userId) },
+                {
+                    $set: { cart: {items: []} },
+                    $currentDate: { lastModified: true }
+                }
+            );
+        })
+        .catch(err => console.log(err))
+    }
+
     static findById(id) {
         const db = getDb();       
         return db.collection('users')
