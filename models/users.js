@@ -54,11 +54,13 @@ class User {
         // Get ids 
         const cartItems = this.cart.items;
         const productIds = cartItems.map(item => {
+            // Returns an array of IDs
             return item.productId;
         });
         
         return db.collection('products')
         .find({ 
+            // Find multiple items via ID array using $in.
             _id : {
                 $in: productIds
             } 
@@ -97,10 +99,47 @@ class User {
     }
 
     addOrder(userId) {
-        const db = getDb();       
+        const db = getDb();  
+        
+        // Get ids 
+        const cartItems = this.cart.items;
+        const productIds = cartItems.map(item => {
+            return item.productId;
+        });
+        
+        // Code same as getCart()
+        // Copied for inter-decoupling
+        return db.collection('products')
+        .find({ 
+            _id : {
+                $in: productIds
+            } 
+        })
+        .toArray()
+        .then(productsArray => {
+           return productsArray.map(product => {
+                return {
+                    ...product,
+                    qty: cartItems.find(item => {
+                        return product._id.toString() === item.productId.toString()
+                    }).qty
+                }
+            })
+        })
+        .then(detailedProductObjectArray => {
+            // Arranging orders to include user info
+            const orderedProducts = {
+                items: detailedProductObjectArray,
+                user: {
+                    _id: mongodb.ObjectID(userId),
+                    name: this.name
+                }
+            }
 
-        return db.collection('orders')
-        .insertOne(this.cart)
+            // Insert arranged order to order collections
+            return db.collection('orders')
+            .insertOne(orderedProducts)        
+        })
         .then(() => {
             // Clear cart 
             // No coupling since still uses users model
