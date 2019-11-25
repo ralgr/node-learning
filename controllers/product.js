@@ -91,21 +91,21 @@ exports.postDeleteCartItem = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.getOrders = (req, res, next) => {
-//     // Get orders from db > display
-//     // Uses 'EAGER LOADING'
-//     req.user.getOrders({ include: ['products'] })
-//     .then(orderProducts => {                                   
-//         res.render('shop/orders', {
-//             path: '/orders', 
-//             docTitle: 'My Orders',
-//             orderProducts: orderProducts,  
-//             productCSS: true,
-//             formCSS: true,
-//         }); 
-//     })
-//     .catch(err => console.log(err))
-// };
+exports.getOrders = (req, res, next) => {
+    const userId = req.userId;
+
+    req.user.getOrders(userId)
+    .then(ordersArray => {
+        res.render('shop/orders', {
+            path: '/orders', 
+            docTitle: 'My Orders',
+            orderProducts: ordersArray,  
+            productCSS: true,
+            formCSS: true,
+        }); 
+    })
+    .catch(err => console.log(err));
+};
 
 exports.postOrder = (req, res, next) => { 
     const userId = req.userId;

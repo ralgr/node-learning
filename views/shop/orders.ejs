@@ -6,14 +6,14 @@
     <%- include('../includes/nav.ejs') %>
     <main>
         <% if (orderProducts.length > 0) { %>   
-            <ul>
+            <ul class="orders">
                 <% orderProducts.forEach(order => { %>
-                    <li>
-                        <h1><%= order.id %> </h1>
-                        <ul>
-                            <% order.products.forEach(item => { %>
-                                <li>
-                                    <p><%= item.title %> (<%= item.orderItem.qty %>)</p>
+                    <li class="orders__item">
+                        <h1>Order: <%= order._id %> </h1>
+                        <ul class="orders__products">
+                            <% order.items.forEach(item => { %>
+                                <li class="orders__products-item">
+                                    <p><%= item.title %> (<%= item.qty %>)</p>
                                 </li> 
                             <% }) %>
                         </ul>

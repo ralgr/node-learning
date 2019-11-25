@@ -155,6 +155,20 @@ class User {
         .catch(err => console.log(err))
     }
 
+    getOrders(userId) {
+        const db = getDb();
+
+        return db.collection('orders')
+        .find({
+            "user._id" : mongodb.ObjectID(userId)
+        })
+        .toArray()
+        .then(ordersArray => {
+            return ordersArray
+        })
+        .catch(err => console.log(err))
+    }
+
     static findById(id) {
         const db = getDb();       
         return db.collection('users')
