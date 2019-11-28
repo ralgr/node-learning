@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const mongoose = require('mongoose');
+// Handlebars
+// const expressHbs = require('express-handlebars');
 
 const catchAllCtrlr = require('./controllers/catchAll');
+const MongoConn = require('./util/mongo').mongoConn;
 const User = require('./models/users');
 
 // 'app' Initialize a new object where express.js will store and manage various things BTS.
@@ -67,11 +69,6 @@ app.use(shopRoutes);
 
 app.use(catchAllCtrlr.catchAll);
 
-mongoose.connect(
-    'mongodb+srv://ralgr:Uks26mfnCm9iLpcw@cluster0-hxxdm.mongodb.net/shop?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true }
-)
-.then(() => {
-    app.listen(3000);
+MongoConn(() => {
+    app.listen(3000)
 })
-.catch(err => console.log(err));
