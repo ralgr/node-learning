@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 exports.getShop = (req, res, next) => {
-    Product.fetchAll()
+    Product.find()
     .then(products => {        
         res.render('shop/index', {
             prods: products, 
@@ -18,7 +18,7 @@ exports.getShop = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll()
+    Product.find()
     .then(products => {        
         res.render('shop/product-list', {
             prods: products, 
@@ -49,71 +49,71 @@ exports.getProduct = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-exports.getCart = (req, res, next) => {
-    console.log('Initialized get cart');
+// exports.getCart = (req, res, next) => {
+//     console.log('Initialized get cart');
     
-    req.user.getCart()
-    .then(products => {
-        res.render('shop/cart', {
-            path: '/cart', 
-            docTitle: 'My Cart',  
-            productCSS: true,
-            formCSS: true,
-            cartProducts: products
-        }); 
-    })
-    .catch(err => console.log(err))
-};
+//     req.user.getCart()
+//     .then(products => {
+//         res.render('shop/cart', {
+//             path: '/cart', 
+//             docTitle: 'My Cart',  
+//             productCSS: true,
+//             formCSS: true,
+//             cartProducts: products
+//         }); 
+//     })
+//     .catch(err => console.log(err))
+// };
 
-exports.postCart = (req, res, next) => {
-    const prodId = req.body.productId;
+// exports.postCart = (req, res, next) => {
+//     const prodId = req.body.productId;
     
-    // Search prod using ID
-    Product.findById(prodId)
-    .then(product => {
-        return req.user.addToCart(req.userId, product)        
-    })
-    .then(results => {
-        console.log('Item added!');
-        res.redirect('/product-list')  
-    })
-    .catch(err => {console.log(err)})
-};
+//     // Search prod using ID
+//     Product.findById(prodId)
+//     .then(product => {
+//         return req.user.addToCart(req.userId, product)        
+//     })
+//     .then(results => {
+//         console.log('Item added!');
+//         res.redirect('/product-list')  
+//     })
+//     .catch(err => {console.log(err)})
+// };
 
-exports.postDeleteCartItem = (req, res, next) => {
-    const prodId = req.body.id;
-    const userId = req.userId;
+// exports.postDeleteCartItem = (req, res, next) => {
+//     const prodId = req.body.id;
+//     const userId = req.userId;
     
-    req.user.deleteCartItem(prodId, userId)
-    .then(() => {
-        res.redirect('/cart');
-    })
-    .catch(err => console.log(err));
-};
+//     req.user.deleteCartItem(prodId, userId)
+//     .then(() => {
+//         res.redirect('/cart');
+//     })
+//     .catch(err => console.log(err));
+// };
 
-exports.getOrders = (req, res, next) => {
-    const userId = req.userId;
+// exports.getOrders = (req, res, next) => {
+//     const userId = req.userId;
 
-    req.user.getOrders(userId)
-    .then(ordersArray => {
-        res.render('shop/orders', {
-            path: '/orders', 
-            docTitle: 'My Orders',
-            orderProducts: ordersArray,  
-            productCSS: true,
-            formCSS: true,
-        }); 
-    })
-    .catch(err => console.log(err));
-};
+//     req.user.getOrders(userId)
+//     .then(ordersArray => {
+//         res.render('shop/orders', {
+//             path: '/orders', 
+//             docTitle: 'My Orders',
+//             orderProducts: ordersArray,  
+//             productCSS: true,
+//             formCSS: true,
+//         }); 
+//     })
+//     .catch(err => console.log(err));
+// };
 
-exports.postOrder = (req, res, next) => { 
-    const userId = req.userId;
+// exports.postOrder = (req, res, next) => { 
+//     const userId = req.userId;
 
-    req.user.addOrder(userId)
-    .then(() => {
-        res.redirect('/orders')
-    })
-    .catch(err => console.log(err))
-};
+//     req.user.addOrder(userId)
+//     .then(() => {
+//         res.redirect('/orders')
+//     })
+//     .catch(err => console.log(err))
+// };
 

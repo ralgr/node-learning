@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 exports.getAdminProducts = (req, res, next) => {
-    Product.fetchAll()
+    Product.find()
     .then(products => {
         res.render('admin/admin-product-list', {
             prods: products, 
@@ -39,8 +39,12 @@ exports.postAddProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const userId = req.userId;    
-    const product = new Product(title, price, description, imageUrl, userId);
+    const product = new Product({
+        title: title, 
+        price: price, 
+        description: description, 
+        imageUrl: imageUrl
+    });
 
     product.save()
     .then(() => {
@@ -92,14 +96,23 @@ exports.postEditProduct = (req, res, next) => {
     const updatedPrice = req.body.price;
     const updatedDescription = req.body.description;
     const productId = req.body.productId;
-
-    Product.update(productId, updatedTitle, updatedPrice, updatedDescription, updatedImageUrl)
-    .then(() => {
-        res.redirect('/admin/admin-product-list');
-    })
-    .catch(err => {
-        console.log(err);
-    })
+    const updatedObject = {
+        title: updatedTitle, 
+        price: updatedPrice, 
+        description: updatedDescription, 
+        imageUrl: updatedImageUrl
+    };
+      
+    Product.findByIdAndUpdate(
+        productId, 
+        updatedObject, 
+        {runValidators: true}, 
+        () => {
+            console.log('Updated product' + productId);
+            
+            res.redirect('/admin/admin-product-list'); 
+        }
+    );
 };
 
 // Should delete items in cart in addition to the database

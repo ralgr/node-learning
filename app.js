@@ -45,20 +45,20 @@ app.use(bodyParser.urlencoded({extended: false}));
 // Serve files statically(not handled by the router or other middleware).
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-    User.findById('5dd01a14161ec85f9487b452')
-    .then(user => {                
-        // Creating a new field to the req object.
-        // Careful on overwriting existing ones.
-        req.user = new User(user.name, user.email, user.cart); // The full suite user; not just an object
-        req.userId = user._id;
+// app.use((req, res, next) => {
+//     User.findById('5dd01a14161ec85f9487b452')
+//     .then(user => {                
+//         // Creating a new field to the req object.
+//         // Careful on overwriting existing ones.
+//         req.user = new User(user.name, user.email, user.cart); // The full suite user; not just an object
+//         req.userId = user._id;
 
-        next();
-    })
-    .catch(err => {
-        console.log(err);
-    })
-});
+//         next();
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
+// });
 
 // Using the routes in the admin file.
 // adminRoutes is a valid middleware.
@@ -69,7 +69,7 @@ app.use(catchAllCtrlr.catchAll);
 
 mongoose.connect(
     'mongodb+srv://ralgr:Uks26mfnCm9iLpcw@cluster0-hxxdm.mongodb.net/shop?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true}
 )
 .then(() => {
     app.listen(3000);

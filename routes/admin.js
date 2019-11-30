@@ -15,14 +15,14 @@ const router = express.Router();
 // add it instead as a filter, which can be done by including the 'route origin' as an argument before the 
 // routes themselves. Can be seen on app.js. 
 // The MW below will then be accessed at '/admin/add-product'.
-// router.get('/edit-product', adminCtrlr.getAddProduct);
-// router.post('/add-product', adminCtrlr.postAddProduct);
+router.get('/edit-product', adminCtrlr.getAddProduct);
+router.post('/add-product', adminCtrlr.postAddProduct);
 
-// router.get('/edit-product/:productId', adminCtrlr.getEditProduct);
-// router.post('/edit-product', adminCtrlr.postEditProduct);
+router.get('/edit-product/:productId', adminCtrlr.getEditProduct);
+router.post('/edit-product', adminCtrlr.postEditProduct);
 
 // router.post('/delete-product', adminCtrlr.postDeleteProduct);
 
-// router.get('/admin-product-list', adminCtrlr.getAdminProducts);
+router.get('/admin-product-list', adminCtrlr.getAdminProducts);
 
 module.exports = router;
