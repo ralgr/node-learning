@@ -45,20 +45,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 // Serve files statically(not handled by the router or other middleware).
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//     User.findById('5dd01a14161ec85f9487b452')
-//     .then(user => {                
-//         // Creating a new field to the req object.
-//         // Careful on overwriting existing ones.
-//         req.user = new User(user.name, user.email, user.cart); // The full suite user; not just an object
-//         req.userId = user._id;
+app.use((req, res, next) => {
+    User.findById('5dea6514f9c76b4f98046cc1')
+    .then(user => {                
+        // Creating a new field to the req object.
+        // Careful on overwriting existing ones.
+        req.user = user; // The full suite user; not just an object
 
-//         next();
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     })
-// });
+        next();
+    })
+    .catch(err => {
+        console.log(err);
+    })
+});
 
 // Using the routes in the admin file.
 // adminRoutes is a valid middleware.

@@ -106,13 +106,16 @@ exports.postEditProduct = (req, res, next) => {
     Product.findByIdAndUpdate(
         productId, 
         updatedObject, 
-        {runValidators: true}, 
-        () => {
-            console.log('Updated product' + productId);
+        {runValidators: true}
+    )
+    .then(() => {
+        console.log('Updated product' + productId);
             
-            res.redirect('/admin/admin-product-list'); 
-        }
-    );
+        res.redirect('/admin/admin-product-list'); 
+    })
+    .catch(err => {
+        console.log(err);
+    });
 };
 
 // Should delete items in cart in addition to the database
@@ -120,17 +123,17 @@ exports.postDeleteProduct = (req, res, next) => {
     const productId = req.body.id;
     const userId = req.userId;
 
-    Product.deleteById(productId)
+    Product.findByIdAndRemove(productId)
     .then(() => {
         console.log('Destroy complete');
         // Delete item on cart as well
-        req.user.deleteCartItem(productId, userId)
+        // req.user.deleteCartItem(productId, userId)
 
         res.redirect('/admin/admin-product-list');
     })
     .catch(err => {
         console.log(err);
-    })
+    });
 };
 
 

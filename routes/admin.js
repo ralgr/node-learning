@@ -21,7 +21,7 @@ router.post('/add-product', adminCtrlr.postAddProduct);
 router.get('/edit-product/:productId', adminCtrlr.getEditProduct);
 router.post('/edit-product', adminCtrlr.postEditProduct);
 
-// router.post('/delete-product', adminCtrlr.postDeleteProduct);
+router.post('/delete-product', adminCtrlr.postDeleteProduct);
 
 router.get('/admin-product-list', adminCtrlr.getAdminProducts);
 
