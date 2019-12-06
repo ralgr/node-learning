@@ -65,20 +65,20 @@ exports.getProduct = (req, res, next) => {
 //     .catch(err => console.log(err))
 // };
 
-// exports.postCart = (req, res, next) => {
-//     const prodId = req.body.productId;
+exports.postCart = (req, res, next) => {
+    const prodId = req.body.productId;
     
-//     // Search prod using ID
-//     Product.findById(prodId)
-//     .then(product => {
-//         return req.user.addToCart(req.userId, product)        
-//     })
-//     .then(results => {
-//         console.log('Item added!');
-//         res.redirect('/product-list')  
-//     })
-//     .catch(err => {console.log(err)})
-// };
+    // Search prod using ID
+    Product.findById(prodId)
+    .then(product => {       
+        return req.user.addToCart(product)       
+    })
+    .then(() => {
+        console.log('Item added!');
+        res.redirect('/product-list')  
+    })
+    .catch(err => {console.log(err)})
+};
 
 // exports.postDeleteCartItem = (req, res, next) => {
 //     const prodId = req.body.id;
