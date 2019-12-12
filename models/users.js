@@ -27,27 +27,33 @@ const userSchema = new Schema({
 
 userSchema.methods.addToCart = function(product) {        
     const prodIdToBeChecked = product._id;
-    let cartItems = this.cart.items;
-    const cartProdIndex = cartItems.findIndex(cartProd => {
+    const cartProdIndex = this.cart.items.findIndex(cartProd => {
         return cartProd.productId.toString() === prodIdToBeChecked.toString();
     })
-    const updatedCart = [...cartItems];
+    const updatedCart = [...this.cart.items];
 
     // Check if product is in cart already
     let newQty = 1;
     if (cartProdIndex >= 0) {
         // If in cart, add +1 to qty
-        newQty = cartItems[cartProdIndex].qty + 1;
+        newQty = this.cart.items[cartProdIndex].qty + 1;
         updatedCart[cartProdIndex].qty = newQty;
     } else {
         // If not, add product w/ qty 
         updatedCart.push({productId: product._id, qty: newQty}) 
-    }
-     
-    // Set the user cart to the updated version
-    cartItems = updatedCart;
+    } 
 
-    return this.save();      
+    // Set the user cart to the updated version
+    this.cart.items = updatedCart;
+    return this.save();     
+}
+
+userSchema.methods.addToCart = function(productId) {
+    const productsToKeep = this.cart.items.filter(item => {
+        return item.productId.toString() !== id.toString();
+    })
+
+    return this.save();
 }
 
 module.exports = mongoose.model('User', userSchema);

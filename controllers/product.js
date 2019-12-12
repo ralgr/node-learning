@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const User = require('../models/users');
 
 exports.getShop = (req, res, next) => {
     Product.find()
@@ -49,21 +50,22 @@ exports.getProduct = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.getCart = (req, res, next) => {
-//     console.log('Initialized get cart');
-    
-//     req.user.getCart()
-//     .then(products => {
-//         res.render('shop/cart', {
-//             path: '/cart', 
-//             docTitle: 'My Cart',  
-//             productCSS: true,
-//             formCSS: true,
-//             cartProducts: products
-//         }); 
-//     })
-//     .catch(err => console.log(err))
-// };
+exports.getCart = (req, res, next) => {
+    req.user.populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+        const cartProducts = user.cart.items;
+        
+        res.render('shop/cart', {
+            path: '/cart', 
+            docTitle: 'My Cart',  
+            productCSS: true,
+            formCSS: true,
+            cartProducts: cartProducts
+        }); 
+    })
+    .catch(err => console.log(err))
+};
 
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
