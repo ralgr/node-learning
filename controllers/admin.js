@@ -122,13 +122,12 @@ exports.postEditProduct = (req, res, next) => {
 // Should delete items in cart in addition to the database
 exports.postDeleteProduct = (req, res, next) => {   
     const productId = req.body.id;
-    const userId = req.user._id;
 
     Product.findByIdAndRemove(productId)
     .then(() => {
         console.log('Destroy complete');
         // Delete item on cart as well
-        // req.user.deleteCartItem(productId, userId)
+        req.user.removeFromCart(productId);
 
         res.redirect('/admin/admin-product-list');
     })

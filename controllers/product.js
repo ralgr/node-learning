@@ -70,7 +70,7 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
     
-    // Search prod using ID
+    // Search prod using ID.
     Product.findById(prodId)
     .then(product => {       
         return req.user.addToCart(product)       
@@ -82,16 +82,17 @@ exports.postCart = (req, res, next) => {
     .catch(err => {console.log(err)})
 };
 
-// exports.postDeleteCartItem = (req, res, next) => {
-//     const prodId = req.body.id;
-//     const userId = req.userId;
+exports.postDeleteCartItem = (req, res, next) => {
+    // Product Id of prod to be deleted.
+    const prodId = req.body.id;
     
-//     req.user.deleteCartItem(prodId, userId)
-//     .then(() => {
-//         res.redirect('/cart');
-//     })
-//     .catch(err => console.log(err));
-// };
+    req.user.removeFromCart(prodId)
+    .then(() => {
+        console.log('Cart item removed!');
+        res.redirect('/cart');
+    })
+    .catch(err => console.log(err));
+};
 
 // exports.getOrders = (req, res, next) => {
 //     const userId = req.userId;

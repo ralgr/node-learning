@@ -48,11 +48,16 @@ userSchema.methods.addToCart = function(product) {
     return this.save();     
 }
 
-userSchema.methods.addToCart = function(productId) {
+userSchema.methods.removeFromCart = function(prodId) {
+    // Products array with product to be removed gone.
     const productsToKeep = this.cart.items.filter(item => {
-        return item.productId.toString() !== id.toString();
+        return item.productId.toString() !== prodId.toString();
     })
+    // Set to updatedCart for consistency.
+    const updatedCart = productsToKeep;
 
+    // Set the user cart to the updated version  
+    this.cart.items = updatedCart;
     return this.save();
 }
 
